@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using ToDo.Domain.Entities;
 using ToDo.Domain.Interface;
 using ToDo.Web.Mvc.Models;
@@ -36,6 +37,35 @@ namespace ToDo.Web.Mvc.Controllers
             }  
 
             return View(createItemModel);
+        }
+
+        
+        public async Task<IActionResult> Check(Guid id)
+        {
+            var item = await repository.GetByIdAsync(id);
+
+            if (item is null)
+                return NotFound();
+
+            item.Mark(!item.Done);
+
+            await repository.EditAsync(item);
+            
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var item = await repository.GetByIdAsync(id);
+
+            if (item is null)
+                return NotFound();
+
+            item.Mark(!item.Done);
+
+            await repository.DeleteByIdAsync(id);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

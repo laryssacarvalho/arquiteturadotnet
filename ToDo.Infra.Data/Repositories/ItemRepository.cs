@@ -81,5 +81,50 @@ namespace ToDo.Infra.Data.Repositories
                 }
             };
         }
+
+        public async Task DeleteByIdAsync(Guid id)
+        {
+            var query = "delete from Items where id = @Id";
+            using (var con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    await con.ExecuteAsync(query, new { id = id });
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    con.Close();
+                }
+            };
+        }
+
+        public async Task<Item?> GetByIdAsync(Guid id)
+        {
+            Item result;
+            var query = "select * from Items where id = @Id";
+            using (var con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    result = await con.QueryFirstAsync<Item>(query, new { id = id });
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    con.Close();
+                }
+                return result;
+            };
+
+        }
     }
 }

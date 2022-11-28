@@ -14,6 +14,7 @@
             <th>Descrição</th>
             <th>Data de criação</th>
             <th>Status</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +24,11 @@
                 <td>@item.Description</td>
                 <td>@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
                 <td><input type="checkbox" disabled @( item.Done ? "checked" : "" ) action="" /></td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
+                    <a asp-action="Check" asp-route-id="@item.Id">@( item.Done ? "Desmarcar" : "Marcar" )</a>
+                </td>
+
             </tr>
         }
     </tbody>

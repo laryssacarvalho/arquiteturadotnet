@@ -32,7 +32,8 @@ namespace ToDo.Domain.Entities
         //}
 
         public void MarkAsDone() => Done = true;
-        public void MarkAsUndone() => Done = true;
+        public void MarkAsUndone() => Done = false;
+        public void Mark(bool state) => Done = state;
 
 
     }
